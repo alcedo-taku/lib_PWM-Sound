@@ -1,4 +1,5 @@
 #include "stdio.h"
+#include "tim.h"
 
 /*struct type begin*/
 namespace SoundScale {
@@ -27,36 +28,20 @@ struct Music{
 };
 /*struct type end*/
 
-class PwmSounds{
+
+class PwmSounds {
 public:
-	constexpr void setSounds();
+	PwmSounds();
+	void setTimer(TIM_HandleTypeDef htim, uint32_t channel);
+	void setSounds(Music* hsound, uint8_t dataSize);
 	void startSounds();
-	void updateSounds();
+	bool updateSounds();
 private:
+	TIM_HandleTypeDef htim;
+	uint32_t channel;
+	uint32_t soundTim; // 再生時間の制御
+	uint8_t count; // 何個目の音を再生中か
+	bool musicState = false; // 今音楽が流れているか　再生中にスタート処理を行わないため
+	Music *hsound;
+	Music music[3] = { {SoundScale::hC, 200}, {SoundScale::hE, 200}, {SoundScale::hG, 250} }; // a音階と各音の時間を指定
 };
-
-Music music[3] = { {SoundScale::hC, 200}, {SoundScale::hE, 200}, {SoundScale::hG, 250} }; // a音階と各音の時間を指定
-uint32_t soundTim; // 再生時間の制御
-uint8_t count; // 何個目の音を再生中か
-bool musicState = false; // 今音楽が流れているか　再生中にスタート処理を行わないため
-
-if( HAL_GPIO_ReadPin(GPIOC, GPIO_PIN_13) == GPIO_PIN_RESET && musicState == false ){ //music start
-	HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_1);
-	//__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, (htim1.Init.Period)*0.5);
-	soundTim = HAL_GetTick();//music updateに進めるように、とりあえず代入
-	count = 0;
-	musicState = true; // 再生中にする
-	HAL_GPIO_WritePin(GPIOA,GPIO_PIN_5,GPIO_PIN_SET); // インジゲータLED点灯
-}
-if( soundTim <= HAL_GetTick() && musicState == true ){
-	if( count < ( sizeof(music)/sizeof(Music))/*いくつ音があるか*/ ){ //music update
-		__HAL_TIM_SET_AUTORELOAD( &htim1, 64000000/*HAL_RCC_GetHCLKFreq()*/ / (htim1.Init.Prescaler) / music[count].musicScale ); //counter period変更 → 周波数変更
-		__HAL_TIM_SET_COMPARE(&htim1, TIM_CHANNEL_1, (htim1.Init.Period)*0.5); //count変更？ → デューティー比変更
-		soundTim = HAL_GetTick() + music[count].musicTime; //soundTim 更新
-	}else{ //music stop
-		HAL_TIM_PWM_Stop(&htim1, TIM_CHANNEL_1);
-		musicState = false; // 再生停止状態にする
-		HAL_GPIO_WritePin(GPIOA,GPIO_PIN_5,GPIO_PIN_RESET); // インジゲータLED消灯
-	}
-	count++;
-}

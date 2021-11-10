@@ -23,7 +23,7 @@ namespace SoundScale {
 	constexpr Element hB = 987.767f;
 };
 struct Music{
-	SoundScale::Element musicScale;//厳密には型ではないけれど、型に見せかける方法
+	SoundScale::Element musicScale; // 厳密には型ではないけれど、型に見せかける方法
 	uint32_t musicTime;
 };
 /*struct type end*/
@@ -43,5 +43,5 @@ private:
 	uint8_t count; // 何個目の音を再生中か
 	bool musicState = false; // 今音楽が流れているか　再生中にスタート処理を行わないため
 	Music *hsound;
-	Music music[3] = { {SoundScale::hC, 200}, {SoundScale::hE, 200}, {SoundScale::hG, 250} }; // a音階と各音の時間を指定
+	Music music[3] = { {SoundScale::hC, 200}, {SoundScale::hE, 200}, {SoundScale::hG, 250} }; // 音階と各音の時間を指定
 };

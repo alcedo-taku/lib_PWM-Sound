@@ -31,13 +31,15 @@ struct Music{
 
 class PwmSounds {
 public:
-	PwmSounds(TIM_HandleTypeDef htim, uint32_t channel);
+	PwmSounds();
+	PwmSounds(TIM_HandleTypeDef* htim, uint32_t channel);
+	PwmSounds(TIM_HandleTypeDef& htim, uint32_t channel);
 	void setSounds(Music* sounds);
 	void startSounds();
 	bool updateSounds();
 private:
-	TIM_HandleTypeDef htim;
-	uint32_t channel;
+	TIM_HandleTypeDef* sound_htim;
+	uint32_t sound_channel;
 	uint32_t soundTim; // 再生時間の制御
 	uint8_t count; // 何個目の音を再生中か
 	bool musicState = false; // 今音楽が流れているか　再生中にスタート処理を行わないため

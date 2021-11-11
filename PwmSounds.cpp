@@ -7,6 +7,11 @@ PwmSounds::PwmSounds(TIM_HandleTypeDef* sound_htim, uint32_t sound_channel):
 {
 }
 
+PwmSounds::PwmSounds(TIM_HandleTypeDef& sound_htim, uint32_t sound_channel):
+	PwmSounds(&sound_htim, sound_channel)
+{
+}
+
 void PwmSounds::setSounds(Music* sounds, uint8_t number_of_sound){
 	this->sounds = sounds;
 	this->number_of_sound = number_of_sound;

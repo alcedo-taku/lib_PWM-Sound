@@ -34,7 +34,7 @@ public:
 	PwmSounds();
 	PwmSounds(TIM_HandleTypeDef* htim, uint32_t channel);
 	PwmSounds(TIM_HandleTypeDef& htim, uint32_t channel);
-	void setSounds(Music* sounds);
+	void setSounds(Music* sounds, uint8_t number_of_sound);
 	void startSounds();
 	bool updateSounds();
 private:
@@ -44,4 +44,5 @@ private:
 	uint8_t count; // 何個目の音を再生中か
 	bool musicState = false; // 今音楽が流れているか　再生中にスタート処理を行わないため
 	Music *sounds;
+	uint8_t number_of_sound;
 };

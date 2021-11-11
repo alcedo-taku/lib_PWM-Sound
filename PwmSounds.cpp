@@ -7,8 +7,9 @@ PwmSounds::PwmSounds(TIM_HandleTypeDef* sound_htim, uint32_t sound_channel):
 {
 }
 
-void PwmSounds::setSounds(Music* tmphsound){
-	sounds = tmphsound;
+void PwmSounds::setSounds(Music* sounds, uint8_t number_of_sound){
+	this->sounds = sounds;
+	this->number_of_sound = number_of_sound;
 }
 
 void PwmSounds::startSounds(){
@@ -23,7 +24,7 @@ void PwmSounds::startSounds(){
 
 bool PwmSounds::updateSounds(){
 	if( musicState == true && soundTim <= HAL_GetTick() ){ // もし再生中で、かつその音を出す時間を過ぎていたら
-		if( count < ( sizeof(sounds)/sizeof(Music))/*音の数*/ ){ // もし次の音があれば
+		if( count < number_of_sound/*音の数*/ ){ // もし次の音があれば
 			// music update
 			__HAL_TIM_SET_AUTORELOAD( sound_htim, 64000000/*HAL_RCC_GetHCLKFreq()*/ / (sound_htim->Init.Prescaler) / sounds[count].musicScale ); // counter period変更 → 周波数変更
 			__HAL_TIM_SET_COMPARE(sound_htim, sound_channel, (sound_htim->Init.Period)*0.5); // デューティー比を50%にする

@@ -31,9 +31,8 @@ struct Music{
 
 class PwmSounds {
 public:
-	PwmSounds();
-	void setTimer(TIM_HandleTypeDef htim, uint32_t channel);
-	void setSounds(Music* hsound, uint8_t dataSize);
+	PwmSounds(TIM_HandleTypeDef htim, uint32_t channel);
+	void setSounds(Music* sounds);
 	void startSounds();
 	bool updateSounds();
 private:
@@ -42,6 +41,5 @@ private:
 	uint32_t soundTim; // 再生時間の制御
 	uint8_t count; // 何個目の音を再生中か
 	bool musicState = false; // 今音楽が流れているか　再生中にスタート処理を行わないため
-	Music *hsound;
-	Music music[3] = { {SoundScale::hC, 200}, {SoundScale::hE, 200}, {SoundScale::hG, 250} }; // 音階と各音の時間を指定
+	Music *sounds;
 };

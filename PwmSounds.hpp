@@ -4,7 +4,7 @@
 /*struct type begin*/
 namespace SoundScale {
 //	typedef float Element;
-	using Element = float;//C++だと上よりこちらのほうが一般的　テンプレートにも対応
+	using Element = float; // C++だと上よりこちらのほうが一般的　テンプレートにも対応
 
 	constexpr Element lB = 246.44f;
 	constexpr Element C = 261.63f; //ド
@@ -24,8 +24,8 @@ namespace SoundScale {
 	constexpr Element R = 0.0f; // 休符
 };
 struct Music{
-	SoundScale::Element musicScale; // 厳密には型ではないけれど、型に見せかける方法
-	uint32_t musicTime;
+	SoundScale::Element music_scale; // 厳密にはElementは型ではないけれど、型に見せかける方法
+	uint32_t music_time;
 };
 /*struct type end*/
 
@@ -35,15 +35,15 @@ public:
 	PwmSounds();
 	PwmSounds(TIM_HandleTypeDef* htim, uint32_t channel);
 	PwmSounds(TIM_HandleTypeDef& htim, uint32_t channel);
-	void setSounds(Music* sounds, uint8_t number_of_sound);
-	void startSounds();
-	bool updateSounds();
+	void set_sounds(Music* sounds, uint8_t number_of_sound);
+	void start_sounds();
+	bool update_sounds();
 private:
 	TIM_HandleTypeDef* sound_htim;
 	uint32_t sound_channel;
-	uint32_t soundTim; // 再生時間の制御
-	uint8_t count; // 何個目の音を再生中か
-	bool musicState = false; // 今音楽が流れているか　再生中にスタート処理を行わないため
+	uint32_t end_time_of_sound; // 各音を終了する時間
+	uint8_t playing_sound; // 何個目の音を再生中か
+	bool is_playing = false; // 再生中か　再生中にスタート処理を行わないため
 	Music *sounds;
-	uint8_t number_of_sound;
+	uint8_t number_of_sounds; // 合計何音か
 };

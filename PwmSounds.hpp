@@ -41,7 +41,7 @@ public:
 private:
 	TIM_HandleTypeDef* sound_htim;
 	uint32_t sound_channel;
-	uint32_t end_time_of_sound; // 各音を終了する時間
+	uint32_t end_time_of_sound; // 音を終了する時間
 	uint8_t playing_sound; // 何個目の音を再生中か
 	bool is_playing = false; // 再生中か　再生中にスタート処理を行わないため
 	Music *sounds;

@@ -1,5 +1,4 @@
 #include "PwmSounds.hpp"
-#include "gpio.h"
 
 PwmSounds::PwmSounds(TIM_HandleTypeDef* sound_htim, uint32_t sound_channel):
 	sound_htim(sound_htim),
@@ -22,7 +21,7 @@ void PwmSounds::start_sounds(){
 		// music start
 		__HAL_TIM_SET_AUTORELOAD( sound_htim, 99); // counter period を変更
 		HAL_TIM_PWM_Start( sound_htim, sound_channel );
-		end_time_of_sound = HAL_GetTick(); // music updateに進めるように、とりあえず代入
+		end_time_of_sound = 0;
 		playing_sound = 0;
 		is_playing = true; // 再生中にする
 	}

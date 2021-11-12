@@ -33,7 +33,7 @@ bool PwmSounds::update_sounds(){
 			if(sounds[playing_sound].music_scale == 0){ // もし周波数が0(休符)だったら
 				__HAL_TIM_SET_COMPARE(sound_htim, sound_channel, 0); // デューティー比を0%にする
 			}else{
-				__HAL_TIM_SET_PRESCALER( sound_htim, 64000000/*HAL_RCC_GetHCLKFreq()*/ / (sound_htim->Init.AutoReloadPreload) / sounds[playing_sound].music_scale ); // counter period変更 → 周波数変更
+				__HAL_TIM_SET_PRESCALER( sound_htim, 64000000/*HAL_RCC_GetHCLKFreq()*/ / __HAL_TIM_GET_AUTORELOAD(sound_htim) / sounds[playing_sound].music_scale ); // counter period変更 → 周波数変更
 				__HAL_TIM_SET_COMPARE( sound_htim, sound_channel, 50 ); // デューティー比を50%にする
 			}
 			end_time_of_sound = HAL_GetTick() + sounds[playing_sound].music_time;

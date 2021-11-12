@@ -2,7 +2,7 @@
 
 ## サンプルプログラム
 
-```C++
+```cpp
 Music music[3] = { {SoundScale::hC, 200}, {SoundScale::hE, 200}, {SoundScale::hG, 250} }; // 音階と各音の時間を指定
 PwmSounds pwm_sounds(&htim1, TIM_CHANNEL_1);
 

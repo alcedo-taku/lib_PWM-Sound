@@ -31,8 +31,12 @@ bool PwmSounds::updateSounds(){
 	if( musicState == true && soundTim <= HAL_GetTick() ){ // もし再生中で、かつその音を出す時間を過ぎていたら
 		if( count < number_of_sound/*音の数*/ ){ // もし次の音があれば
 			// music update
-			__HAL_TIM_SET_AUTORELOAD( sound_htim, 64000000/*HAL_RCC_GetHCLKFreq()*/ / (sound_htim->Init.Prescaler) / sounds[count].musicScale ); // counter period変更 → 周波数変更
-			__HAL_TIM_SET_COMPARE(sound_htim, sound_channel, (sound_htim->Init.Period)*0.5); // デューティー比を50%にする
+			if(sounds[count].musicScale == 0){ // もし周波数が0(休符)だったら
+				__HAL_TIM_SET_COMPARE(sound_htim, sound_channel, 0); // デューティー比を0%にする
+			}else{
+				__HAL_TIM_SET_AUTORELOAD( sound_htim, 64000000/*HAL_RCC_GetHCLKFreq()*/ / (sound_htim->Init.Prescaler) / sounds[count].musicScale ); // counter period変更 → 周波数変更
+				__HAL_TIM_SET_COMPARE(sound_htim, sound_channel, (sound_htim->Init.Period)*0.5); // デューティー比を50%にする
+			}
 			soundTim = HAL_GetTick() + sounds[count].musicTime; // soundTim 更新
 		}else{
 			// music stop

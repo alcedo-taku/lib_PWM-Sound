@@ -21,6 +21,7 @@ namespace SoundScale {
 	constexpr Element hG = 783.991f;
 	constexpr Element hA = 880.000f;
 	constexpr Element hB = 987.767f;
+	constexpr Element R = 0.0f; // 休符
 };
 struct Music{
 	SoundScale::Element musicScale; // 厳密には型ではないけれど、型に見せかける方法
